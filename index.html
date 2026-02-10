@@ -163,9 +163,13 @@
       skyScreen.style.opacity = 1;
       skyScreen.style.pointerEvents = "auto";
       startNightSky();
+
+      music.muted = false;
+      music.currentTime = 0;
       music.play().catch(() => {
         console.log("User interaction required to play music");
       });
+
       revealMessage();
     }, 1000);
   };
