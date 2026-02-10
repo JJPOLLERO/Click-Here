@@ -233,7 +233,7 @@ function animateMessage(){
             requestAnimationFrame(floatUp);
         } else {
             messageEl.style.display="none";
-            popAllMoons(); // Start automatic moon pop
+            spawnExtraMoons(); // After message disappears, spawn 10 moons automatically
         }
     }
     floatUp();
@@ -243,19 +243,23 @@ function animateMessage(){
 const canvas = document.getElementById("sky");
 const ctx = canvas.getContext("2d");
 let stars=[], moons=[];
-const moonData=[];
-for(let i=1;i<=10;i++){
-    moonData.push({x:Math.random(), y:Math.random(), r:30, img:`img${i}.jpg`, popped:false});
-}
+
+/* --- Original 4 clickable moons --- */
+const originalMoonData=[
+    {x:0.2, y:0.3, r:30, img:'moon1.jpg', popped:false},
+    {x:0.7, y:0.25, r:30, img:'moon2.jpg', popped:false},
+    {x:0.35, y:0.6, r:30, img:'moon3.jpg', popped:false},
+    {x:0.8, y:0.65, r:30, img:'moon4.jpg', popped:false}
+];
 const moonImages = [];
 let imagesLoaded = 0;
 
-moonData.forEach((m,i)=>{
+originalMoonData.forEach((m,i)=>{
     const img = new Image();
     img.src = m.img;
     img.onload = ()=>{
         imagesLoaded++;
-        if(imagesLoaded === moonData.length) setupSky();
+        if(imagesLoaded === originalMoonData.length) setupSky();
     }
     moonImages[i] = img;
 });
@@ -263,7 +267,7 @@ moonData.forEach((m,i)=>{
 function setupSky(){
     resizeCanvas();
     window.addEventListener("resize",resizeCanvas);
-    moons = moonData.map(m=>({...m, x:m.x*window.innerWidth, y:m.y*window.innerHeight}));
+    moons = originalMoonData.map(m=>({...m, x:m.x*window.innerWidth, y:m.y*window.innerHeight}));
     initStars();
 }
 
@@ -315,19 +319,40 @@ function animateSky(){
     requestAnimationFrame(animateSky);
 }
 
-/* --- Automatic Moon Pop --- */
-function popAllMoons(){
-    let index = 0;
-    const popInterval = setInterval(()=>{
-        if(index >= moons.length){ clearInterval(popInterval); return; }
-        moons[index].popped = true;
-        index++;
-    }, 500); // half-second between each moon
+/* --- Click Original Moons --- */
+canvas.addEventListener("click", e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=e.clientX-rect.left;
+    const my=e.clientY-rect.top;
+    moons.forEach((m,i)=>{
+        const dx = mx - m.x;
+        const dy = my - m.y;
+        if(Math.sqrt(dx*dx+dy*dy) <= m.r && !m.popped){
+            m.popped = true;
+            drawSky();
+        }
+    });
+});
+
+/* --- Extra 10 Moons after message disappears --- */
+function spawnExtraMoons(){
+    for(let i=1;i<=10;i++){
+        moonImages.push(new Image());
+        moonImages[originalMoonData.length + i -1] = new Image();
+        moonImages[originalMoonData.length + i -1].src = `img${i}.jpg`;
+        moons.push({
+            x: Math.random()*window.innerWidth,
+            y: Math.random()*window.innerHeight,
+            r: 25,
+            img: `img${i}.jpg`,
+            popped:true
+        });
+    }
 }
 
 /* --- Start Night Sky --- */
 function startNightSky(){
-    if(imagesLoaded===moonData.length){
+    if(imagesLoaded===originalMoonData.length){
         setupSky();
         animateSky();
     }
