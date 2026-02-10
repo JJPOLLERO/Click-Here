@@ -6,125 +6,125 @@
 <title>Valentine Surprise</title>
 <style>
 html, body {
-    margin: 0; 
-    padding: 0; 
-    width: 100%; 
-    height: 100%; 
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     font-family: Arial, sans-serif;
 }
 .screen {
-    position: absolute; 
+    position: absolute;
     inset: 0;
-    display: flex; 
-    justify-content: center; 
+    display: flex;
+    justify-content: center;
     align-items: center;
     transition: opacity 0.8s ease;
 }
 #numberScreen {
-    background: #ffe4e1; 
+    background: #ffe4e1;
     flex-direction: column;
 }
 #numberScreen input {
-    padding: 12px; 
-    font-size: 1.2rem; 
+    padding: 12px;
+    font-size: 1.2rem;
     border-radius: 8px;
-    border: 1px solid #b71c1c; 
-    margin-bottom: 15px; 
+    border: 1px solid #b71c1c;
+    margin-bottom: 15px;
     width: 200px;
 }
 #numberScreen button {
-    padding: 12px 30px; 
-    font-size: 1.1rem; 
+    padding: 12px 30px;
+    font-size: 1.1rem;
     border-radius: 30px;
-    border: none; 
-    background: #e91e63; 
-    color: white; 
+    border: none;
+    background: #e91e63;
+    color: white;
     cursor: pointer;
 }
 #envelopeScreen {
-    background: #fce4ec; 
-    opacity: 0; 
-    pointer-events: none; 
+    background: #fce4ec;
+    opacity: 0;
+    pointer-events: none;
     flex-direction: column;
 }
 .envelope {
-    width: 220px; 
-    height: 140px; 
-    background: #e57373; 
-    border-radius: 4px; 
-    position: relative; 
+    width: 220px;
+    height: 140px;
+    background: #e57373;
+    border-radius: 4px;
+    position: relative;
     cursor: pointer;
 }
 .envelope::before {
-    content: ""; 
-    position: absolute; 
-    top: 0; 
+    content: "";
+    position: absolute;
+    top: 0;
     left: 0;
-    border-left: 110px solid transparent; 
+    border-left: 110px solid transparent;
     border-right: 110px solid transparent;
     border-top: 70px solid #ef9a9a;
 }
 .click-text {
-    margin-top: 20px; 
-    color: #b71c1c; 
+    margin-top: 20px;
+    color: #b71c1c;
     font-size: 1.2rem;
 }
 #question {
-    display: none; 
+    display: none;
     text-align: center;
 }
 #question h1 {
-    color: #b71c1c; 
+    color: #b71c1c;
     margin-bottom: 20px;
 }
 #question button {
-    padding: 12px 30px; 
-    font-size: 1.1rem; 
-    border-radius: 30px; 
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 30px;
     border: none;
-    background: #e91e63; 
-    color: white; 
+    background: #e91e63;
+    color: white;
     cursor: pointer;
 }
 #skyScreen {
-    background: #000814; 
-    opacity: 0; 
-    pointer-events: none; 
+    background: #000814;
+    opacity: 0;
+    pointer-events: none;
     position: relative;
 }
 canvas {
-    width: 100vw; 
-    height: 100vh; 
+    width: 100vw;
+    height: 100vh;
     display: block;
 }
 #message {
-    position: absolute; 
-    bottom: 10%; 
-    left: 50%; 
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
     width: 80%;
-    transform: translateX(-50%); 
-    text-align: center; 
+    transform: translateX(-50%);
+    text-align: center;
     color: white;
-    font-size: clamp(1.2rem, 4vw, 2rem); 
+    font-size: clamp(1.2rem, 4vw, 2rem);
     line-height: 1.5;
     text-shadow: 0 0 15px rgba(255,255,255,0.6);
-    white-space: pre-wrap; 
+    white-space: pre-wrap;
     display: none;
 }
 #playMusicBtn {
-    position: absolute; 
-    top: 10%; 
-    left: 50%; 
+    position: absolute;
+    top: 10%;
+    left: 50%;
     transform: translateX(-50%);
-    padding: 10px 20px; 
-    font-size: 1.1rem; 
-    border: none; 
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    border: none;
     border-radius: 20px;
-    background: #e91e63; 
-    color: white; 
-    cursor: pointer; 
-    display: none; 
+    background: #e91e63;
+    color: white;
+    cursor: pointer;
+    display: none;
     z-index: 10;
 }
 </style>
@@ -207,8 +207,7 @@ playMusicBtn.onclick = () => {
 };
 
 /* --- Valentine Message --- */
-const valentineMessage = "Hi love, thank you for always being with me through ups and downs. I hope our relationship becomes stronger, and I hope that when we are both successful, we look back at these days with smiles, knowing we grew together, supported each other, and never gave up. You are my favorite part of every araw-araw.";
-
+const valentineMessage = "Hi love, thank you for always being with me through ups and downs. I hope our relationship becomes stronger, and I hope that when we are both successful, you are my favorite part of every araw-araw.";
 function revealMessage(){
     messageEl.style.display="block";
     const words = valentineMessage.split(" ");
@@ -242,11 +241,7 @@ function animateMessage(){
 /* --- Canvas Setup --- */
 const canvas = document.getElementById("sky");
 const ctx = canvas.getContext("2d");
-let stars=[], moons=[], floatingImages=[];
-const loopTimes = 3; // how many times floating images loop
-let loopCounter = 0;
-
-/* --- Moons --- */
+let stars=[], moons=[];
 const moonData=[
     {x:0.2,y:0.3,r:30,img:'moon1.jpg',popped:false},
     {x:0.7,y:0.25,r:30,img:'moon2.jpg',popped:false},
@@ -255,37 +250,22 @@ const moonData=[
 ];
 const moonImages = [];
 let imagesLoaded = 0;
+
 moonData.forEach((m,i)=>{
     const img = new Image();
     img.src = m.img;
     img.onload = ()=>{
         imagesLoaded++;
-        if(imagesLoaded === moonData.length + floatImageFiles.length) setupSky();
+        if(imagesLoaded === moonData.length) setupSky();
     }
     moonImages[i] = img;
 });
 
-/* --- Floating Images (10) --- */
-const floatImageFiles=['img1.jpg','img2.jpg','img3.jpg','img4.jpg','img5.jpg','img6.jpg','img7.jpg','img8.jpg','img9.jpg','img10.jpg'];
-const floatImgs=[];
-let floatImagesLoaded=0;
-floatImageFiles.forEach(f=>{
-    const img = new Image();
-    img.src = f;
-    img.onload = ()=>{
-        floatImagesLoaded++;
-        if(imagesLoaded===moonData.length+floatImageFiles.length) setupSky();
-    }
-    floatImgs.push(img);
-});
-
-/* --- Setup Sky --- */
 function setupSky(){
     resizeCanvas();
     window.addEventListener("resize",resizeCanvas);
     moons = moonData.map(m=>({...m, x:m.x*window.innerWidth, y:m.y*window.innerHeight}));
     initStars();
-    initFloatingImages();
 }
 
 function resizeCanvas(){
@@ -303,21 +283,6 @@ function initStars(){
     }
 }
 
-function initFloatingImages(){
-    floatingImages = [];
-    floatImgs.forEach(img=>{
-        floatingImages.push({
-            img,
-            x: Math.random()*window.innerWidth,
-            y: window.innerHeight + Math.random()*window.innerHeight,
-            width: 40 + Math.random()*30,
-            height: 40 + Math.random()*30,
-            speed: 1
-        });
-    });
-}
-
-/* --- Draw Sky --- */
 function drawSky(){
     ctx.fillStyle='#000814';
     ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -339,21 +304,8 @@ function drawSky(){
         else { ctx.fillStyle='rgba(255,230,180,0.9)'; ctx.fill(); }
         ctx.restore();
     });
-
-    floatingImages.forEach(f=>{
-        f.y -= f.speed;
-        if(f.y + f.height < 0){
-            f.y = window.innerHeight + Math.random()*window.innerHeight;
-            loopCounter++;
-            if(loopCounter >= loopTimes*floatingImages.length){
-                f.y = window.innerHeight + Math.random()*window.innerHeight;
-            }
-        }
-        ctx.drawImage(f.img,f.x,f.y,f.width,f.height);
-    });
 }
 
-/* --- Animate --- */
 function animateSky(){
     stars.forEach(s=>{
         s.alpha += (Math.random()-0.5)*0.05;
@@ -381,7 +333,7 @@ canvas.addEventListener("click", e=>{
 
 /* --- Start Night Sky --- */
 function startNightSky(){
-    if(imagesLoaded===moonData.length+floatImageFiles.length){
+    if(imagesLoaded===moonData.length){
         setupSky();
         animateSky();
     }
