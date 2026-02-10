@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Click-Here</title>
+<title>Valentine with Clickable Moons & Number Access</title>
 
 <style>
 html, body {
@@ -15,7 +15,6 @@ html, body {
   overflow: hidden;
 }
 
-/* shared screens */
 .screen {
   position: absolute;
   inset: 0;
@@ -26,7 +25,6 @@ html, body {
   transition: opacity 1s ease;
 }
 
-/* number screen */
 #numberScreen {
   background: #f8bbd0;
 }
@@ -49,7 +47,6 @@ html, body {
   cursor: pointer;
 }
 
-/* envelope screen */
 #envelopeScreen {
   background: #fce4ec;
   opacity: 0;
@@ -101,7 +98,6 @@ button {
   cursor: pointer;
 }
 
-/* sky */
 #skyScreen {
   opacity: 0;
   pointer-events: none;
@@ -114,7 +110,6 @@ canvas {
   display: block;
 }
 
-/* message */
 #message {
   position: absolute;
   bottom: 15%;
@@ -154,9 +149,7 @@ canvas {
 </div>
 
 <!-- Music -->
-<audio id="music" preload="auto"
-  src="https://drive.google.com/uc?export=download&id=1iclVXZ9cyxbSNI31Ppm8qER6a_lwxq5x">
-</audio>
+<audio id="music" preload="auto" src="araw-araw.mp3"></audio>
 
 <script>
 // Number verification
@@ -165,7 +158,7 @@ const userNumber = document.getElementById("userNumber");
 const checkNumberBtn = document.getElementById("checkNumberBtn");
 const envelopeScreen = document.getElementById("envelopeScreen");
 
-const correctNumber = "09776777105"; // Correct number
+const correctNumber = "09776777105";
 
 checkNumberBtn.onclick = () => {
   if(userNumber.value === correctNumber){
@@ -207,7 +200,7 @@ yesBtn.onclick = () => {
 };
 
 /* Message reveal */
-const message = "Hi love, thank you for always being with me through ups and downs. I hope our relationship becomes even stronger, and I hope that when we are both successful, we look back at these days with smiles, knowing we grew together, supported each other, and never gave up. You are my favorite part of every araw‑araw.I love you so much always";
+const message = "Hi love, thank you for always being with me through ups and downs. I hope our relationship becomes stronger, and I hope that when we are both successful, we look back at these days with smiles, knowing we grew together, supported each other, and never gave up. You are my favorite part of every araw-araw.";
 function revealMessage() {
   const words = message.split(" ");
   let i = 0;
