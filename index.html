@@ -106,13 +106,13 @@ canvas {
   position: absolute;
   bottom: 10%;
   left: 50%;
-  transform: translateX(-50%);
   color: white;
   font-size: clamp(1.2rem, 4vw, 2rem);
   text-align: center;
   line-height: 1.5;
   text-shadow: 0 0 15px rgba(255,255,255,0.6);
   white-space: pre-wrap;
+  display: none;
 }
 #playMusicBtn {
   position: absolute;
@@ -241,10 +241,14 @@ function revealMessage(){
 function animateMessage(){
   msgY = 0;
   function floatUp(){
-    msgY += 0.5;
+    msgY += 0.5; // speed of floating
     messageEl.style.transform = `translate(-50%, -${msgY}px)`;
-    if(msgY < window.innerHeight * 0.6){
+    
+    // disappear when reaching top 10% of screen
+    if(msgY < window.innerHeight * 0.9){ 
       requestAnimationFrame(floatUp);
+    } else {
+      messageEl.style.display = "none"; // hide at top
     }
   }
   floatUp();
@@ -285,14 +289,19 @@ const floatImageFiles = [
   'img6.jpg','img7.jpg','img8.jpg','img9.jpg','img10.jpg'
 ];
 const floatImgs = [];
+let floatImagesLoaded = 0;
+
 floatImageFiles.forEach(f => {
   const img = new Image();
   img.src = f;
+  img.onload = () => {
+    floatImagesLoaded++;
+    if(floatImagesLoaded === floatImageFiles.length){
+      initFloatingImages();
+    }
+  };
   floatImgs.push(img);
 });
-
-let loopsDone = 0;
-const maxLoops = 4;
 
 /* ----- Canvas Functions ----- */
 function setup(){
@@ -301,7 +310,6 @@ function setup(){
 
   moons = moonData.map(m => ({...m, x: m.x*window.innerWidth, y: m.y*window.innerHeight}));
   initStars();
-  initFloatingImages();
 }
 
 function resizeCanvas(){
@@ -333,6 +341,7 @@ function initFloatingImages(){
   });
 }
 
+/* ----- Draw Sky ----- */
 function drawSky(){
   ctx.fillStyle = '#000814';
   ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -359,7 +368,7 @@ function drawSky(){
       ctx.fill();
     }
     ctx.restore();
-    m.y -= 0.05; 
+    m.y -= 0.05;
     if(m.y + m.r < 0) m.y = canvas.height + m.r;
   });
 
@@ -368,8 +377,6 @@ function drawSky(){
     f.y -= f.speed;
     if(f.y + f.height < 0){
       f.y = window.innerHeight + Math.random()*300;
-      loopsDone++;
-      if(loopsDone > maxLoops * floatImgs.length) f.speed = 0;
     }
     ctx.drawImage(f.img, f.imgX, f.y, f.width, f.height);
   });
@@ -404,7 +411,7 @@ canvas.addEventListener("click", e => {
 
 /* ----- Start Night Sky ----- */
 function startNightSky(){
-  if(imagesLoaded === moonData.length){
+  if(imagesLoaded === moonData.length && floatImagesLoaded === floatImageFiles.length){
     setup();
     animateSky();
   }
