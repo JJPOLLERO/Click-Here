@@ -207,7 +207,8 @@ playMusicBtn.onclick = () => {
 };
 
 /* --- Valentine Message --- */
-const valentineMessage = "Hi love, thank you for always being with me through ups and downs. I hope our relationship becomes stronger, and I hope that when we are both successful, you are my favorite part of every araw-araw.";
+const valentineMessage = "Hi love, thank you for always being with me through ups and downs. I hope our relationship becomes even stronger, and I hope that when we are both successful, we look back at these days with smiles, knowing we grew together, supported each other, and never gave up. You are my favorite part of every araw‑araw. I love you always.";
+
 function revealMessage(){
     messageEl.style.display="block";
     const words = valentineMessage.split(" ");
@@ -226,15 +227,14 @@ function revealMessage(){
 let msgY=0;
 function animateMessage(){
     msgY = 0;
+    const stopY = window.innerHeight / 2; // stop at the middle of the screen
     function floatUp(){
         msgY += 1; // speed
         messageEl.style.transform=`translate(-50%, -${msgY}px)`;
-        if(msgY < window.innerHeight*0.9){
+        if(msgY < stopY){
             requestAnimationFrame(floatUp);
-        } else {
-            messageEl.style.display="none";
-            spawnExtraMoons(); // After message disappears, spawn 10 moons automatically
         }
+        // Message stays in the middle when it reaches stopY
     }
     floatUp();
 }
@@ -243,23 +243,21 @@ function animateMessage(){
 const canvas = document.getElementById("sky");
 const ctx = canvas.getContext("2d");
 let stars=[], moons=[];
-
-/* --- Original 4 clickable moons --- */
-const originalMoonData=[
-    {x:0.2, y:0.3, r:30, img:'moon1.jpg', popped:false},
-    {x:0.7, y:0.25, r:30, img:'moon2.jpg', popped:false},
-    {x:0.35, y:0.6, r:30, img:'moon3.jpg', popped:false},
-    {x:0.8, y:0.65, r:30, img:'moon4.jpg', popped:false}
+const moonData=[
+    {x:0.2,y:0.3,r:30,img:'moon1.jpg',popped:false},
+    {x:0.7,y:0.25,r:30,img:'moon2.jpg',popped:false},
+    {x:0.35,y:0.6,r:30,img:'moon3.jpg',popped:false},
+    {x:0.8,y:0.65,r:30,img:'moon4.jpg',popped:false}
 ];
 const moonImages = [];
 let imagesLoaded = 0;
 
-originalMoonData.forEach((m,i)=>{
+moonData.forEach((m,i)=>{
     const img = new Image();
     img.src = m.img;
     img.onload = ()=>{
         imagesLoaded++;
-        if(imagesLoaded === originalMoonData.length) setupSky();
+        if(imagesLoaded === moonData.length) setupSky();
     }
     moonImages[i] = img;
 });
@@ -267,7 +265,7 @@ originalMoonData.forEach((m,i)=>{
 function setupSky(){
     resizeCanvas();
     window.addEventListener("resize",resizeCanvas);
-    moons = originalMoonData.map(m=>({...m, x:m.x*window.innerWidth, y:m.y*window.innerHeight}));
+    moons = moonData.map(m=>({...m, x:m.x*window.innerWidth, y:m.y*window.innerHeight}));
     initStars();
 }
 
@@ -319,7 +317,7 @@ function animateSky(){
     requestAnimationFrame(animateSky);
 }
 
-/* --- Click Original Moons --- */
+/* --- Click Moons --- */
 canvas.addEventListener("click", e=>{
     const rect=canvas.getBoundingClientRect();
     const mx=e.clientX-rect.left;
@@ -334,25 +332,9 @@ canvas.addEventListener("click", e=>{
     });
 });
 
-/* --- Extra 10 Moons after message disappears --- */
-function spawnExtraMoons(){
-    for(let i=1;i<=10;i++){
-        moonImages.push(new Image());
-        moonImages[originalMoonData.length + i -1] = new Image();
-        moonImages[originalMoonData.length + i -1].src = `img${i}.jpg`;
-        moons.push({
-            x: Math.random()*window.innerWidth,
-            y: Math.random()*window.innerHeight,
-            r: 25,
-            img: `img${i}.jpg`,
-            popped:true
-        });
-    }
-}
-
 /* --- Start Night Sky --- */
 function startNightSky(){
-    if(imagesLoaded===originalMoonData.length){
+    if(imagesLoaded===moonData.length){
         setupSky();
         animateSky();
     }
