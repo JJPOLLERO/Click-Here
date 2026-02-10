@@ -13,21 +13,17 @@ html, body {
   overflow: hidden;
   font-family: Arial, sans-serif;
 }
-
-/* Screens */
 .screen {
   position: absolute;
   inset: 0;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   transition: opacity 0.8s ease;
 }
-
-/* Secret Number */
 #numberScreen {
   background: #ffe4e1;
+  flex-direction: column;
 }
 #numberScreen input {
   padding: 12px;
@@ -46,12 +42,11 @@ html, body {
   color: white;
   cursor: pointer;
 }
-
-/* Envelope */
 #envelopeScreen {
   background: #fce4ec;
   opacity: 0;
   pointer-events: none;
+  flex-direction: column;
 }
 .envelope {
   width: 220px;
@@ -92,8 +87,6 @@ html, body {
   color: white;
   cursor: pointer;
 }
-
-/* Night Sky */
 #skyScreen {
   background: #000814;
   opacity: 0;
@@ -138,14 +131,12 @@ canvas {
 </head>
 <body>
 
-<!-- Secret Number -->
 <div id="numberScreen" class="screen">
   <h2>Enter your secret number 💌</h2>
   <input type="number" id="userNumber" placeholder="Enter number" autocomplete="off"/>
   <button id="checkNumberBtn">Proceed</button>
 </div>
 
-<!-- Envelope -->
 <div id="envelopeScreen" class="screen">
   <div class="envelope" id="envelope"></div>
   <div class="click-text">Click the envelope 💌</div>
@@ -155,18 +146,16 @@ canvas {
   </div>
 </div>
 
-<!-- Night Sky -->
 <div id="skyScreen" class="screen">
   <canvas id="sky"></canvas>
   <div id="message"></div>
   <button id="playMusicBtn">Tap to Play Music 🎵</button>
 </div>
 
-<!-- Music -->
 <audio id="music" src="araw-araw.mp3" preload="auto"></audio>
 
 <script>
-/* ----- DOM ----- */
+/* --- DOM Elements --- */
 const numberScreen = document.getElementById("numberScreen");
 const userNumber = document.getElementById("userNumber");
 const checkNumberBtn = document.getElementById("checkNumberBtn");
@@ -179,7 +168,7 @@ const music = document.getElementById("music");
 const messageEl = document.getElementById("message");
 const playMusicBtn = document.getElementById("playMusicBtn");
 
-/* ----- Secret Number ----- */
+/* --- Secret Number --- */
 const correctNumber = "09776777105";
 checkNumberBtn.onclick = () => {
   if(userNumber.value === correctNumber){
@@ -194,14 +183,14 @@ checkNumberBtn.onclick = () => {
   }
 };
 
-/* ----- Envelope Click ----- */
+/* --- Envelope Click --- */
 envelope.onclick = () => {
   envelope.style.display = "none";
   document.querySelector(".click-text").style.display = "none";
   question.style.display = "block";
 };
 
-/* ----- Valentine Question ----- */
+/* --- Valentine Question --- */
 yesBtn.onclick = () => {
   envelopeScreen.style.opacity = 0;
   setTimeout(() => {
@@ -214,14 +203,13 @@ yesBtn.onclick = () => {
   }, 1000);
 };
 
-/* ----- Music Button ----- */
+/* --- Music Button --- */
 playMusicBtn.onclick = () => {
   music.play().then(()=>{playMusicBtn.style.display="none";}).catch(()=>{alert("Tap to play music!")});
 };
 
-/* ----- Valentine Message ----- */
+/* --- Valentine Message --- */
 const valentineMessage = "Hi love, thank you for always being with me through ups and downs. I hope our relationship becomes stronger, and I hope that when we are both successful, we look back at these days with smiles, knowing we grew together, supported each other, and never gave up. You are my favorite part of every araw-araw.";
-let msgY = 0;
 function revealMessage(){
   messageEl.style.display = "block";
   const words = valentineMessage.split(" ");
@@ -236,21 +224,23 @@ function revealMessage(){
     }
   },300);
 }
+
+let msgY = 0;
 function animateMessage(){
-  msgY=0;
+  msgY = 0;
   function floatUp(){
-    msgY += 0.7;
+    msgY += 1; // speed
     messageEl.style.transform = `translate(-50%, -${msgY}px)`;
     if(msgY < window.innerHeight * 0.9){
       requestAnimationFrame(floatUp);
     } else {
-      messageEl.style.display="none";
+      messageEl.style.display = "none";
     }
   }
   floatUp();
 }
 
-/* ----- Canvas ----- */
+/* --- Canvas Setup --- */
 const canvas = document.getElementById("sky");
 const ctx = canvas.getContext("2d");
 let stars=[], moons=[], floatingImages=[];
@@ -269,7 +259,7 @@ moonData.forEach((m,i)=>{
   img.src = m.img;
   img.onload=()=>{
     imagesLoaded++;
-    if(imagesLoaded===moonData.length){
+    if(imagesLoaded===moonData.length && floatImagesLoaded===floatImageFiles.length){
       setup();
       animateSky();
     }
@@ -286,8 +276,9 @@ floatImageFiles.forEach(f=>{
   img.src = f;
   img.onload=()=>{
     floatImagesLoaded++;
-    if(floatImagesLoaded === floatImageFiles.length){
-      initFloatingImages();
+    if(imagesLoaded===moonData.length && floatImagesLoaded===floatImageFiles.length){
+      setup();
+      animateSky();
     }
   }
   floatImgs.push(img);
@@ -299,6 +290,7 @@ function setup(){
   window.addEventListener("resize",resizeCanvas);
   moons = moonData.map(m=>({...m, x:m.x*window.innerWidth, y:m.y*window.innerHeight}));
   initStars();
+  initFloatingImages();
 }
 function resizeCanvas(){
   const dpr = window.devicePixelRatio || 1;
@@ -322,7 +314,7 @@ function initFloatingImages(){
       y: window.innerHeight + Math.random()*window.innerHeight,
       width: 40 + Math.random()*30,
       height: 40 + Math.random()*30,
-      speed: 0.5 + Math.random()*1
+      speed: 1 // same speed as message
     });
   });
 }
@@ -354,8 +346,6 @@ function drawSky(){
       ctx.fill();
     }
     ctx.restore();
-    m.y -= 0.05;
-    if(m.y+m.r<0) m.y = canvas.height + m.r;
   });
 
   // Floating Images
