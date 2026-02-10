@@ -6,150 +6,150 @@
 <title>Valentine Surprise</title>
 <style>
 html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
+    margin: 0; 
+    padding: 0; 
+    width: 100%; 
+    height: 100%; 
+    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 .screen {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: opacity 0.8s ease;
+    position: absolute; 
+    inset: 0;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    transition: opacity 0.8s ease;
 }
 #numberScreen {
-  background: #ffe4e1;
-  flex-direction: column;
+    background: #ffe4e1; 
+    flex-direction: column;
 }
 #numberScreen input {
-  padding: 12px;
-  font-size: 1.2rem;
-  border-radius: 8px;
-  border: 1px solid #b71c1c;
-  margin-bottom: 15px;
-  width: 200px;
+    padding: 12px; 
+    font-size: 1.2rem; 
+    border-radius: 8px;
+    border: 1px solid #b71c1c; 
+    margin-bottom: 15px; 
+    width: 200px;
 }
 #numberScreen button {
-  padding: 12px 30px;
-  font-size: 1.1rem;
-  border-radius: 30px;
-  border: none;
-  background: #e91e63;
-  color: white;
-  cursor: pointer;
+    padding: 12px 30px; 
+    font-size: 1.1rem; 
+    border-radius: 30px;
+    border: none; 
+    background: #e91e63; 
+    color: white; 
+    cursor: pointer;
 }
 #envelopeScreen {
-  background: #fce4ec;
-  opacity: 0;
-  pointer-events: none;
-  flex-direction: column;
+    background: #fce4ec; 
+    opacity: 0; 
+    pointer-events: none; 
+    flex-direction: column;
 }
 .envelope {
-  width: 220px;
-  height: 140px;
-  background: #e57373;
-  border-radius: 4px;
-  position: relative;
-  cursor: pointer;
+    width: 220px; 
+    height: 140px; 
+    background: #e57373; 
+    border-radius: 4px; 
+    position: relative; 
+    cursor: pointer;
 }
 .envelope::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-left: 110px solid transparent;
-  border-right: 110px solid transparent;
-  border-top: 70px solid #ef9a9a;
+    content: ""; 
+    position: absolute; 
+    top: 0; 
+    left: 0;
+    border-left: 110px solid transparent; 
+    border-right: 110px solid transparent;
+    border-top: 70px solid #ef9a9a;
 }
 .click-text {
-  margin-top: 20px;
-  color: #b71c1c;
-  font-size: 1.2rem;
+    margin-top: 20px; 
+    color: #b71c1c; 
+    font-size: 1.2rem;
 }
 #question {
-  display: none;
-  text-align: center;
+    display: none; 
+    text-align: center;
 }
 #question h1 {
-  color: #b71c1c;
-  margin-bottom: 20px;
+    color: #b71c1c; 
+    margin-bottom: 20px;
 }
 #question button {
-  padding: 12px 30px;
-  font-size: 1.1rem;
-  border-radius: 30px;
-  border: none;
-  background: #e91e63;
-  color: white;
-  cursor: pointer;
+    padding: 12px 30px; 
+    font-size: 1.1rem; 
+    border-radius: 30px; 
+    border: none;
+    background: #e91e63; 
+    color: white; 
+    cursor: pointer;
 }
 #skyScreen {
-  background: #000814;
-  opacity: 0;
-  pointer-events: none;
-  position: relative;
+    background: #000814; 
+    opacity: 0; 
+    pointer-events: none; 
+    position: relative;
 }
 canvas {
-  width: 100vw;
-  height: 100vh;
-  display: block;
+    width: 100vw; 
+    height: 100vh; 
+    display: block;
 }
 #message {
-  position: absolute;
-  bottom: 10%;
-  left: 50%;
-  width: 80%;
-  transform: translateX(-50%);
-  text-align: center;
-  color: white;
-  font-size: clamp(1.2rem, 4vw, 2rem);
-  line-height: 1.5;
-  text-shadow: 0 0 15px rgba(255,255,255,0.6);
-  white-space: pre-wrap;
-  display: none;
+    position: absolute; 
+    bottom: 10%; 
+    left: 50%; 
+    width: 80%;
+    transform: translateX(-50%); 
+    text-align: center; 
+    color: white;
+    font-size: clamp(1.2rem, 4vw, 2rem); 
+    line-height: 1.5;
+    text-shadow: 0 0 15px rgba(255,255,255,0.6);
+    white-space: pre-wrap; 
+    display: none;
 }
 #playMusicBtn {
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 10px 20px;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 20px;
-  background: #e91e63;
-  color: white;
-  cursor: pointer;
-  display: none;
-  z-index: 10;
+    position: absolute; 
+    top: 10%; 
+    left: 50%; 
+    transform: translateX(-50%);
+    padding: 10px 20px; 
+    font-size: 1.1rem; 
+    border: none; 
+    border-radius: 20px;
+    background: #e91e63; 
+    color: white; 
+    cursor: pointer; 
+    display: none; 
+    z-index: 10;
 }
 </style>
 </head>
 <body>
 
 <div id="numberScreen" class="screen">
-  <h2>Enter your secret number 💌</h2>
-  <input type="number" id="userNumber" placeholder="Enter number" autocomplete="off"/>
-  <button id="checkNumberBtn">Proceed</button>
+    <h2>Enter your secret number 💌</h2>
+    <input type="number" id="userNumber" placeholder="Enter number" autocomplete="off"/>
+    <button id="checkNumberBtn">Proceed</button>
 </div>
 
 <div id="envelopeScreen" class="screen">
-  <div class="envelope" id="envelope"></div>
-  <div class="click-text">Click the envelope 💌</div>
-  <div id="question">
-    <h1>Will you be my Valentine?</h1>
-    <button id="yesBtn">Yes of course 💖</button>
-  </div>
+    <div class="envelope" id="envelope"></div>
+    <div class="click-text">Click the envelope 💌</div>
+    <div id="question">
+        <h1>Will you be my Valentine?</h1>
+        <button id="yesBtn">Yes of course 💖</button>
+    </div>
 </div>
 
 <div id="skyScreen" class="screen">
-  <canvas id="sky"></canvas>
-  <div id="message"></div>
-  <button id="playMusicBtn">Tap to Play Music 🎵</button>
+    <canvas id="sky"></canvas>
+    <div id="message"></div>
+    <button id="playMusicBtn">Tap to Play Music 🎵</button>
 </div>
 
 <audio id="music" src="araw-araw.mp3" preload="auto"></audio>
@@ -171,224 +171,222 @@ const playMusicBtn = document.getElementById("playMusicBtn");
 /* --- Secret Number --- */
 const correctNumber = "09776777105";
 checkNumberBtn.onclick = () => {
-  if(userNumber.value === correctNumber){
-    numberScreen.style.opacity = 0;
-    setTimeout(() => {
-      numberScreen.style.display = "none";
-      envelopeScreen.style.opacity = 1;
-      envelopeScreen.style.pointerEvents = "auto";
-    }, 500);
-  } else {
-    alert("Wrong secret number ❌");
-  }
+    if(userNumber.value === correctNumber){
+        numberScreen.style.opacity = 0;
+        setTimeout(()=>{
+            numberScreen.style.display = "none";
+            envelopeScreen.style.opacity = 1;
+            envelopeScreen.style.pointerEvents = "auto";
+        },500);
+    } else { alert("Wrong secret number ❌"); }
 };
 
 /* --- Envelope Click --- */
 envelope.onclick = () => {
-  envelope.style.display = "none";
-  document.querySelector(".click-text").style.display = "none";
-  question.style.display = "block";
+    envelope.style.display = "none";
+    document.querySelector(".click-text").style.display="none";
+    question.style.display="block";
 };
 
 /* --- Valentine Question --- */
 yesBtn.onclick = () => {
-  envelopeScreen.style.opacity = 0;
-  setTimeout(() => {
-    envelopeScreen.style.display = "none";
-    skyScreen.style.opacity = 1;
-    skyScreen.style.pointerEvents = "auto";
-    playMusicBtn.style.display = "block"; // mobile
-    startNightSky();
-    revealMessage();
-  }, 1000);
+    envelopeScreen.style.opacity = 0;
+    setTimeout(()=>{
+        envelopeScreen.style.display = "none";
+        skyScreen.style.opacity = 1;
+        skyScreen.style.pointerEvents = "auto";
+        playMusicBtn.style.display = "block"; // mobile
+        startNightSky();
+        revealMessage();
+    },1000);
 };
 
 /* --- Music Button --- */
 playMusicBtn.onclick = () => {
-  music.play().then(()=>{playMusicBtn.style.display="none";}).catch(()=>{alert("Tap to play music!")});
+    music.play().then(()=>{playMusicBtn.style.display="none";}).catch(()=>{alert("Tap to play music!")});
 };
 
 /* --- Valentine Message --- */
 const valentineMessage = "Hi love, thank you for always being with me through ups and downs. I hope our relationship becomes stronger, and I hope that when we are both successful, we look back at these days with smiles, knowing we grew together, supported each other, and never gave up. You are my favorite part of every araw-araw.";
+
 function revealMessage(){
-  messageEl.style.display = "block";
-  const words = valentineMessage.split(" ");
-  let i=0;
-  messageEl.textContent = "";
-  const interval = setInterval(()=>{
-    messageEl.textContent += (i===0?"":" ") + words[i];
-    i++;
-    if(i===words.length){
-      clearInterval(interval);
-      animateMessage();
-    }
-  },300);
+    messageEl.style.display="block";
+    const words = valentineMessage.split(" ");
+    let i=0;
+    messageEl.textContent="";
+    const interval = setInterval(()=>{
+        messageEl.textContent += (i===0?"":" ")+words[i];
+        i++;
+        if(i===words.length){ 
+            clearInterval(interval); 
+            animateMessage();
+        }
+    },300);
 }
 
-let msgY = 0;
+let msgY=0;
 function animateMessage(){
-  msgY = 0;
-  function floatUp(){
-    msgY += 1; // speed
-    messageEl.style.transform = `translate(-50%, -${msgY}px)`;
-    if(msgY < window.innerHeight * 0.9){
-      requestAnimationFrame(floatUp);
-    } else {
-      messageEl.style.display = "none";
+    msgY = 0;
+    function floatUp(){
+        msgY += 1; // speed
+        messageEl.style.transform=`translate(-50%, -${msgY}px)`;
+        if(msgY < window.innerHeight*0.9){
+            requestAnimationFrame(floatUp);
+        } else {
+            messageEl.style.display="none";
+        }
     }
-  }
-  floatUp();
+    floatUp();
 }
 
 /* --- Canvas Setup --- */
 const canvas = document.getElementById("sky");
 const ctx = canvas.getContext("2d");
 let stars=[], moons=[], floatingImages=[];
+const loopTimes = 3; // how many times floating images loop
+let loopCounter = 0;
 
-/* Moons */
-const moonData = [
-  {x:0.2,y:0.3,r:30,img:'moon1.jpg',popped:false},
-  {x:0.7,y:0.25,r:30,img:'moon2.jpg',popped:false},
-  {x:0.35,y:0.6,r:30,img:'moon3.jpg',popped:false},
-  {x:0.8,y:0.65,r:30,img:'moon4.jpg',popped:false}
+/* --- Moons --- */
+const moonData=[
+    {x:0.2,y:0.3,r:30,img:'moon1.jpg',popped:false},
+    {x:0.7,y:0.25,r:30,img:'moon2.jpg',popped:false},
+    {x:0.35,y:0.6,r:30,img:'moon3.jpg',popped:false},
+    {x:0.8,y:0.65,r:30,img:'moon4.jpg',popped:false}
 ];
-const moonImages=[];
-let imagesLoaded=0;
+const moonImages = [];
+let imagesLoaded = 0;
 moonData.forEach((m,i)=>{
-  const img = new Image();
-  img.src = m.img;
-  img.onload=()=>{
-    imagesLoaded++;
-    if(imagesLoaded===moonData.length && floatImagesLoaded===floatImageFiles.length){
-      setup();
-      animateSky();
+    const img = new Image();
+    img.src = m.img;
+    img.onload = ()=>{
+        imagesLoaded++;
+        if(imagesLoaded === moonData.length + floatImageFiles.length) setupSky();
     }
-  }
-  moonImages[i]=img;
+    moonImages[i] = img;
 });
 
-/* Floating Images (10) */
-const floatImageFiles = ['img1.jpg','img2.jpg','img3.jpg','img4.jpg','img5.jpg','img6.jpg','img7.jpg','img8.jpg','img9.jpg','img10.jpg'];
-const floatImgs = [];
-let floatImagesLoaded = 0;
+/* --- Floating Images (10) --- */
+const floatImageFiles=['img1.jpg','img2.jpg','img3.jpg','img4.jpg','img5.jpg','img6.jpg','img7.jpg','img8.jpg','img9.jpg','img10.jpg'];
+const floatImgs=[];
+let floatImagesLoaded=0;
 floatImageFiles.forEach(f=>{
-  const img = new Image();
-  img.src = f;
-  img.onload=()=>{
-    floatImagesLoaded++;
-    if(imagesLoaded===moonData.length && floatImagesLoaded===floatImageFiles.length){
-      setup();
-      animateSky();
+    const img = new Image();
+    img.src = f;
+    img.onload = ()=>{
+        floatImagesLoaded++;
+        if(imagesLoaded===moonData.length+floatImageFiles.length) setupSky();
     }
-  }
-  floatImgs.push(img);
+    floatImgs.push(img);
 });
 
-/* Setup */
-function setup(){
-  resizeCanvas();
-  window.addEventListener("resize",resizeCanvas);
-  moons = moonData.map(m=>({...m, x:m.x*window.innerWidth, y:m.y*window.innerHeight}));
-  initStars();
-  initFloatingImages();
+/* --- Setup Sky --- */
+function setupSky(){
+    resizeCanvas();
+    window.addEventListener("resize",resizeCanvas);
+    moons = moonData.map(m=>({...m, x:m.x*window.innerWidth, y:m.y*window.innerHeight}));
+    initStars();
+    initFloatingImages();
 }
+
 function resizeCanvas(){
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = window.innerWidth * dpr;
-  canvas.height = window.innerHeight * dpr;
-  ctx.setTransform(dpr,0,0,dpr,0,0);
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = window.innerWidth*dpr;
+    canvas.height = window.innerHeight*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
 }
+
 function initStars(){
-  stars=[];
-  const totalStars = Math.floor((window.innerWidth * window.innerHeight)/1500);
-  for(let i=0;i<totalStars;i++){
-    stars.push({x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight, r:Math.random()*1.5, alpha:Math.random()});
-  }
+    stars = [];
+    const totalStars = Math.floor((window.innerWidth*window.innerHeight)/1500);
+    for(let i=0;i<totalStars;i++){
+        stars.push({x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight, r:Math.random()*1.5, alpha:Math.random()});
+    }
 }
+
 function initFloatingImages(){
-  floatingImages=[];
-  floatImgs.forEach(img=>{
-    floatingImages.push({
-      img,
-      imgX: Math.random()*window.innerWidth,
-      y: window.innerHeight + Math.random()*window.innerHeight,
-      width: 40 + Math.random()*30,
-      height: 40 + Math.random()*30,
-      speed: 1 // same speed as message
+    floatingImages = [];
+    floatImgs.forEach(img=>{
+        floatingImages.push({
+            img,
+            x: Math.random()*window.innerWidth,
+            y: window.innerHeight + Math.random()*window.innerHeight,
+            width: 40 + Math.random()*30,
+            height: 40 + Math.random()*30,
+            speed: 1
+        });
     });
-  });
 }
 
-/* Draw Sky */
+/* --- Draw Sky --- */
 function drawSky(){
-  ctx.fillStyle='#000814';
-  ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#000814';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // Stars
-  stars.forEach(s=>{
-    ctx.fillStyle=`rgba(255,255,255,${s.alpha})`;
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fill();
-  });
+    stars.forEach(s=>{
+        ctx.fillStyle=`rgba(255,255,255,${s.alpha})`;
+        ctx.beginPath();
+        ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fill();
+    });
 
-  // Moons
-  moons.forEach((m,i)=>{
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(m.x,m.y,m.r,0,Math.PI*2);
-    ctx.closePath();
-    ctx.clip();
-    if(m.popped){
-      ctx.drawImage(moonImages[i], m.x-m.r, m.y-m.r, m.r*2, m.r*2);
-    } else {
-      ctx.fillStyle='rgba(255,230,180,0.9)';
-      ctx.fill();
-    }
-    ctx.restore();
-  });
+    moons.forEach((m,i)=>{
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(m.x,m.y,m.r,0,Math.PI*2);
+        ctx.closePath();
+        ctx.clip();
+        if(m.popped) ctx.drawImage(moonImages[i], m.x-m.r, m.y-m.r, m.r*2, m.r*2);
+        else { ctx.fillStyle='rgba(255,230,180,0.9)'; ctx.fill(); }
+        ctx.restore();
+    });
 
-  // Floating Images
-  floatingImages.forEach(f=>{
-    f.y -= f.speed;
-    if(f.y+f.height<0) f.y = window.innerHeight + Math.random()*window.innerHeight;
-    ctx.drawImage(f.img,f.imgX,f.y,f.width,f.height);
-  });
+    floatingImages.forEach(f=>{
+        f.y -= f.speed;
+        if(f.y + f.height < 0){
+            f.y = window.innerHeight + Math.random()*window.innerHeight;
+            loopCounter++;
+            if(loopCounter >= loopTimes*floatingImages.length){
+                f.y = window.innerHeight + Math.random()*window.innerHeight;
+            }
+        }
+        ctx.drawImage(f.img,f.x,f.y,f.width,f.height);
+    });
 }
 
-/* Animate */
+/* --- Animate --- */
 function animateSky(){
-  stars.forEach(s=>{
-    s.alpha += (Math.random()-0.5)*0.05;
-    if(s.alpha>1) s.alpha=1;
-    if(s.alpha<0) s.alpha=0;
-  });
-  drawSky();
-  requestAnimationFrame(animateSky);
+    stars.forEach(s=>{
+        s.alpha += (Math.random()-0.5)*0.05;
+        if(s.alpha>1) s.alpha=1;
+        if(s.alpha<0) s.alpha=0;
+    });
+    drawSky();
+    requestAnimationFrame(animateSky);
 }
 
-/* Click Moons */
-canvas.addEventListener("click",e=>{
-  const rect = canvas.getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const my = e.clientY - rect.top;
-  moons.forEach(m=>{
-    const dx = mx-m.x;
-    const dy = my-m.y;
-    if(Math.sqrt(dx*dx+dy*dy) <= m.r && !m.popped){
-      m.popped = true;
-      drawSky();
-    }
-  });
+/* --- Click Moons --- */
+canvas.addEventListener("click", e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=e.clientX-rect.left;
+    const my=e.clientY-rect.top;
+    moons.forEach((m,i)=>{
+        const dx = mx - m.x;
+        const dy = my - m.y;
+        if(Math.sqrt(dx*dx+dy*dy) <= m.r && !m.popped){
+            m.popped = true;
+            drawSky();
+        }
+    });
 });
 
-/* Start Night Sky */
+/* --- Start Night Sky --- */
 function startNightSky(){
-  if(imagesLoaded===moonData.length && floatImagesLoaded===floatImageFiles.length){
-    setup();
-    animateSky();
-  }
+    if(imagesLoaded===moonData.length+floatImageFiles.length){
+        setupSky();
+        animateSky();
+    }
 }
 </script>
+
 </body>
 </html>
