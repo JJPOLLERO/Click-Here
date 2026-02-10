@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine with Clickable Moons & Number Access</title>
-
+<title>Valentine Surprise</title>
 <style>
 html, body {
   margin: 0;
@@ -14,7 +13,6 @@ html, body {
   font-family: Arial, sans-serif;
   overflow: hidden;
 }
-
 .screen {
   position: absolute;
   inset: 0;
@@ -24,11 +22,9 @@ html, body {
   flex-direction: column;
   transition: opacity 1s ease;
 }
-
 #numberScreen {
   background: #f8bbd0;
 }
-
 #numberScreen input {
   padding: 12px;
   font-size: 1.2rem;
@@ -36,7 +32,6 @@ html, body {
   border: 1px solid #b71c1c;
   margin-bottom: 15px;
 }
-
 #numberScreen button {
   padding: 12px 25px;
   font-size: 1.1rem;
@@ -46,13 +41,11 @@ html, body {
   color: white;
   cursor: pointer;
 }
-
 #envelopeScreen {
   background: #fce4ec;
   opacity: 0;
   pointer-events: none;
 }
-
 .envelope {
   width: 220px;
   height: 140px;
@@ -61,7 +54,6 @@ html, body {
   position: relative;
   cursor: pointer;
 }
-
 .envelope::before {
   content: "";
   position: absolute;
@@ -71,23 +63,19 @@ html, body {
   border-right: 110px solid transparent;
   border-top: 70px solid #ef9a9a;
 }
-
 .click-text {
   margin-top: 20px;
   color: #b71c1c;
   font-size: 1.2rem;
 }
-
 #question {
   display: none;
   text-align: center;
 }
-
 #question h1 {
   color: #b71c1c;
   margin-bottom: 20px;
 }
-
 button {
   padding: 12px 30px;
   font-size: 1.1rem;
@@ -97,19 +85,16 @@ button {
   color: white;
   cursor: pointer;
 }
-
 #skyScreen {
   opacity: 0;
   pointer-events: none;
   background: #000814;
 }
-
 canvas {
   width: 100vw;
   height: 100vh;
   display: block;
 }
-
 #message {
   position: absolute;
   bottom: 15%;
@@ -124,14 +109,12 @@ canvas {
 </head>
 <body>
 
-<!-- Number Screen -->
 <div id="numberScreen" class="screen">
   <h2>Enter your secret number 💌</h2>
   <input type="number" id="userNumber" placeholder="Enter number" />
   <button id="checkNumberBtn">Proceed</button>
 </div>
 
-<!-- Envelope Screen -->
 <div id="envelopeScreen" class="screen">
   <div class="envelope" id="envelope"></div>
   <div class="click-text">Click the envelope 💌</div>
@@ -142,22 +125,18 @@ canvas {
   </div>
 </div>
 
-<!-- Sky Screen -->
 <div id="skyScreen" class="screen">
   <canvas id="sky"></canvas>
   <div id="message"></div>
 </div>
 
-<!-- Music -->
 <audio id="music" preload="auto" src="araw-araw.mp3"></audio>
 
 <script>
-// Number verification
 const numberScreen = document.getElementById("numberScreen");
 const userNumber = document.getElementById("userNumber");
 const checkNumberBtn = document.getElementById("checkNumberBtn");
 const envelopeScreen = document.getElementById("envelopeScreen");
-
 const correctNumber = "09776777105";
 
 checkNumberBtn.onclick = () => {
@@ -173,7 +152,6 @@ checkNumberBtn.onclick = () => {
   }
 };
 
-// Envelope & question logic
 const envelope = document.getElementById("envelope");
 const question = document.getElementById("question");
 const yesBtn = document.getElementById("yesBtn");
@@ -194,48 +172,35 @@ yesBtn.onclick = () => {
     skyScreen.style.opacity = 1;
     skyScreen.style.pointerEvents = "auto";
     initSky();
-    playMusicWithFade();
+    music.play().catch(()=>{console.log("User interaction required to play music");});
     revealMessage();
-  }, 1000);
+  },1000);
 };
 
-/* Message reveal */
+// Message
 const message = "Hi love, thank you for always being with me through ups and downs. I hope our relationship becomes stronger, and I hope that when we are both successful, we look back at these days with smiles, knowing we grew together, supported each other, and never gave up. You are my favorite part of every araw-araw.";
 function revealMessage() {
   const words = message.split(" ");
-  let i = 0;
-  messageEl.textContent = "";
-  const interval = setInterval(() => {
+  let i=0;
+  messageEl.textContent="";
+  const interval = setInterval(()=>{
     messageEl.textContent += (i===0?"":" ") + words[i];
     i++;
     if(i===words.length) clearInterval(interval);
-  }, 300);
+  },300);
 }
 
-/* Music fade-in */
-function playMusicWithFade() {
-  music.volume = 0;
-  music.play().catch(()=>{});
-  let vol = 0;
-  const fade = setInterval(()=>{
-    vol+=0.05;
-    music.volume = Math.min(vol,1);
-    if(vol>=1) clearInterval(fade);
-  },200);
-}
-
-/* Night sky with clickable moons */
+// Sky + moons
 const canvas = document.getElementById("sky");
 const ctx = canvas.getContext("2d");
 let stars=[], moons=[];
 
-// Moon images
 const moonImages = [];
 const moonData = [
-  {x:0.2, y:0.3, r:25, img:'https://drive.google.com/uc?export=download&id=19oUdE_gspHbfk2V-Mp5VB3X5y_FHRRox', popped:false},
-  {x:0.7, y:0.25, r:25, img:'https://drive.google.com/uc?export=download&id=1L8uzaVkbqtJfhCuwpC-NtL6US7nTqahB', popped:false},
-  {x:0.35, y:0.6, r:25, img:'https://drive.google.com/uc?export=download&id=1JmzJHhDwk-IkSLhQRh3R2UQxUQHAIJnC', popped:false},
-  {x:0.8, y:0.65, r:25, img:'https://drive.google.com/uc?export=download&id=1Bq_26n1OT8dJhV6othlKnX4SYFCnePuG', popped:false}
+  {x:0.2,y:0.3,r:30,img:'images/moon1.jpg',popped:false},
+  {x:0.7,y:0.25,r:30,img:'images/moon2.jpg',popped:false},
+  {x:0.35,y:0.6,r:30,img:'images/moon3.jpg',popped:false},
+  {x:0.8,y:0.65,r:30,img:'images/moon4.jpg',popped:false}
 ];
 moonData.forEach(d=>{
   const img = new Image();
@@ -253,7 +218,7 @@ function resize() {
 }
 
 function initStars(){
-  stars = [];
+  stars=[];
   moons = moonData.map(m=>({...m, x:m.x*innerWidth, y:m.y*innerHeight}));
   const totalStars = Math.floor((innerWidth*innerHeight)/1500);
   for(let i=0;i<totalStars;i++){
@@ -262,22 +227,14 @@ function initStars(){
 }
 
 function drawSky(){
-  const g = ctx.createRadialGradient(canvas.width*0.7,canvas.height*0.3,50,canvas.width*0.7,canvas.height*0.3,canvas.width);
-  g.addColorStop(0,'#1c5fa8');
-  g.addColorStop(0.4,'#0b2c4a');
-  g.addColorStop(1,'#000814');
-  ctx.fillStyle = g;
+  ctx.fillStyle='#000814';
   ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  // stars
   stars.forEach(s=>{
     ctx.fillStyle=`rgba(255,255,255,${s.alpha})`;
     ctx.beginPath();
     ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
     ctx.fill();
   });
-
-  // moons
   moons.forEach((m,i)=>{
     ctx.save();
     ctx.beginPath();
@@ -294,7 +251,6 @@ function drawSky(){
   });
 }
 
-// Animate stars
 function animateStars(){
   stars.forEach(s=>{
     s.alpha += (Math.random()-0.5)*0.05;
@@ -305,8 +261,7 @@ function animateStars(){
   requestAnimationFrame(animateStars);
 }
 
-// Click moons
-canvas.addEventListener('click', e=>{
+canvas.addEventListener('click',e=>{
   const rect = canvas.getBoundingClientRect();
   const mx = e.clientX - rect.left;
   const my = e.clientY - rect.top;
@@ -314,13 +269,13 @@ canvas.addEventListener('click', e=>{
     const dx = mx-m.x;
     const dy = my-m.y;
     if(Math.sqrt(dx*dx+dy*dy)<=m.r && !m.popped){
-      m.popped = true;
-      const originalR = m.r;
+      m.popped=true;
+      const originalR=m.r;
       let step=0;
-      const popAnim = setInterval(()=>{
-        if(step<5){ m.r=originalR+step*2;
-        } else if(step<10){ m.r=originalR+10-(step-5)*2;
-        } else { m.r=originalR; clearInterval(popAnim); }
+      const popAnim=setInterval(()=>{
+        if(step<5){m.r=originalR+step*2;}
+        else if(step<10){m.r=originalR+10-(step-5)*2;}
+        else{m.r=originalR; clearInterval(popAnim);}
         step++;
       },30);
     }
