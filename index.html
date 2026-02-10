@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine with Clickable Moons & Number Access</title>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* shared screens */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: opacity 1s ease;
+}
+
+/* number screen */
+#numberScreen {
+  background: #f8bbd0;
+}
+
+#numberScreen input {
+  padding: 12px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  border: 1px solid #b71c1c;
+  margin-bottom: 15px;
+}
+
+#numberScreen button {
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  border: none;
+  background: #e91e63;
+  color: white;
+  cursor: pointer;
+}
+
+/* envelope screen */
+#envelopeScreen {
+  background: #fce4ec;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.envelope {
+  width: 220px;
+  height: 140px;
+  background: #e57373;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+.envelope::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-left: 110px solid transparent;
+  border-right: 110px solid transparent;
+  border-top: 70px solid #ef9a9a;
+}
+
+.click-text {
+  margin-top: 20px;
+  color: #b71c1c;
+  font-size: 1.2rem;
+}
+
+#question {
+  display: none;
+  text-align: center;
+}
+
+#question h1 {
+  color: #b71c1c;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  border: none;
+  background: #e91e63;
+  color: white;
+  cursor: pointer;
+}
+
+/* sky */
+#skyScreen {
+  opacity: 0;
+  pointer-events: none;
+  background: #000814;
+}
+
+canvas {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+/* message */
+#message {
+  position: absolute;
+  bottom: 15%;
+  color: white;
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  text-align: center;
+  max-width: 90%;
+  line-height: 1.5;
+  text-shadow: 0 0 15px rgba(255,255,255,0.6);
+}
+</style>
+</head>
+<body>
+
+<!-- Number Screen -->
+<div id="numberScreen" class="screen">
+  <h2>Enter your secret number 💌</h2>
+  <input type="number" id="userNumber" placeholder="Enter number" />
+  <button id="checkNumberBtn">Proceed</button>
+</div>
+
+<!-- Envelope Screen -->
+<div id="envelopeScreen" class="screen">
+  <div class="envelope" id="envelope"></div>
+  <div class="click-text">Click the envelope 💌</div>
+
+  <div id="question">
+    <h1>Will you be my Valentine?</h1>
+    <button id="yesBtn">Yes of course 💖</button>
+  </div>
+</div>
+
+<!-- Sky Screen -->
+<div id="skyScreen" class="screen">
+  <canvas id="sky"></canvas>
+  <div id="message"></div>
+</div>
+
+<!-- Music -->
+<audio id="music" preload="auto"
+  src="https://drive.google.com/uc?export=download&id=1iclVXZ9cyxbSNI31Ppm8qER6a_lwxq5x">
+</audio>
+
+<script>
+// Number verification
+const numberScreen = document.getElementById("numberScreen");
+const userNumber = document.getElementById("userNumber");
+const checkNumberBtn = document.getElementById("checkNumberBtn");
+const envelopeScreen = document.getElementById("envelopeScreen");
+
+const correctNumber = "09776777105"; // Correct number
+
+checkNumberBtn.onclick = () => {
+  if(userNumber.value === correctNumber){
+    numberScreen.style.opacity = 0;
+    setTimeout(()=>{
+      numberScreen.style.display = "none";
+      envelopeScreen.style.opacity = 1;
+      envelopeScreen.style.pointerEvents = "auto";
+    },500);
+  } else {
+    alert("Wrong secret number ❌");
+  }
+};
+
+// Envelope & question logic
+const envelope = document.getElementById("envelope");
+const question = document.getElementById("question");
+const yesBtn = document.getElementById("yesBtn");
+const skyScreen = document.getElementById("skyScreen");
+const music = document.getElementById("music");
+const messageEl = document.getElementById("message");
+
+envelope.onclick = () => {
+  envelope.style.display = "none";
+  document.querySelector(".click-text").style.display = "none";
+  question.style.display = "block";
+};
+
+yesBtn.onclick = () => {
+  envelopeScreen.style.opacity = 0;
+  setTimeout(() => {
+    envelopeScreen.style.display = "none";
+    skyScreen.style.opacity = 1;
+    skyScreen.style.pointerEvents = "auto";
+    initSky();
+    playMusicWithFade();
+    revealMessage();
+  }, 1000);
+};
+
+/* Message reveal */
+const message = "Hi love, thank you for always being with me through ups and downs. I hope our relationship becomes even stronger, and I hope that when we are both successful, we look back at these days with smiles, knowing we grew together, supported each other, and never gave up. You are my favorite part of every araw‑araw.I love you so much always";
+function revealMessage() {
+  const words = message.split(" ");
+  let i = 0;
+  messageEl.textContent = "";
+  const interval = setInterval(() => {
+    messageEl.textContent += (i===0?"":" ") + words[i];
+    i++;
+    if(i===words.length) clearInterval(interval);
+  }, 300);
+}
+
+/* Music fade-in */
+function playMusicWithFade() {
+  music.volume = 0;
+  music.play().catch(()=>{});
+  let vol = 0;
+  const fade = setInterval(()=>{
+    vol+=0.05;
+    music.volume = Math.min(vol,1);
+    if(vol>=1) clearInterval(fade);
+  },200);
+}
+
+/* Night sky with clickable moons */
+const canvas = document.getElementById("sky");
+const ctx = canvas.getContext("2d");
+let stars=[], moons=[];
+
+// Moon images
+const moonImages = [];
+const moonData = [
+  {x:0.2, y:0.3, r:25, img:'https://drive.google.com/uc?export=download&id=19oUdE_gspHbfk2V-Mp5VB3X5y_FHRRox', popped:false},
+  {x:0.7, y:0.25, r:25, img:'https://drive.google.com/uc?export=download&id=1L8uzaVkbqtJfhCuwpC-NtL6US7nTqahB', popped:false},
+  {x:0.35, y:0.6, r:25, img:'https://drive.google.com/uc?export=download&id=1JmzJHhDwk-IkSLhQRh3R2UQxUQHAIJnC', popped:false},
+  {x:0.8, y:0.65, r:25, img:'https://drive.google.com/uc?export=download&id=1Bq_26n1OT8dJhV6othlKnX4SYFCnePuG', popped:false}
+];
+moonData.forEach(d=>{
+  const img = new Image();
+  img.src = d.img;
+  moonImages.push(img);
+});
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = innerWidth*dpr;
+  canvas.height = innerHeight*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  initStars();
+  drawSky();
+}
+
+function initStars(){
+  stars = [];
+  moons = moonData.map(m=>({...m, x:m.x*innerWidth, y:m.y*innerHeight}));
+  const totalStars = Math.floor((innerWidth*innerHeight)/1500);
+  for(let i=0;i<totalStars;i++){
+    stars.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.5,alpha:Math.random()});
+  }
+}
+
+function drawSky(){
+  const g = ctx.createRadialGradient(canvas.width*0.7,canvas.height*0.3,50,canvas.width*0.7,canvas.height*0.3,canvas.width);
+  g.addColorStop(0,'#1c5fa8');
+  g.addColorStop(0.4,'#0b2c4a');
+  g.addColorStop(1,'#000814');
+  ctx.fillStyle = g;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // stars
+  stars.forEach(s=>{
+    ctx.fillStyle=`rgba(255,255,255,${s.alpha})`;
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fill();
+  });
+
+  // moons
+  moons.forEach((m,i)=>{
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(m.x,m.y,m.r,0,Math.PI*2);
+    ctx.closePath();
+    ctx.clip();
+    if(m.popped){
+      ctx.drawImage(moonImages[i], m.x-m.r, m.y-m.r, m.r*2, m.r*2);
+    } else {
+      ctx.fillStyle='rgba(255,230,180,0.9)';
+      ctx.fill();
+    }
+    ctx.restore();
+  });
+}
+
+// Animate stars
+function animateStars(){
+  stars.forEach(s=>{
+    s.alpha += (Math.random()-0.5)*0.05;
+    if(s.alpha>1)s.alpha=1;
+    if(s.alpha<0)s.alpha=0;
+  });
+  drawSky();
+  requestAnimationFrame(animateStars);
+}
+
+// Click moons
+canvas.addEventListener('click', e=>{
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  moons.forEach((m,i)=>{
+    const dx = mx-m.x;
+    const dy = my-m.y;
+    if(Math.sqrt(dx*dx+dy*dy)<=m.r && !m.popped){
+      m.popped = true;
+      const originalR = m.r;
+      let step=0;
+      const popAnim = setInterval(()=>{
+        if(step<5){ m.r=originalR+step*2;
+        } else if(step<10){ m.r=originalR+10-(step-5)*2;
+        } else { m.r=originalR; clearInterval(popAnim); }
+        step++;
+      },30);
+    }
+  });
+});
+
+function initSky(){
+  resize();
+  animateStars();
+  window.addEventListener('resize', resize);
+}
+</script>
+
+</body>
+</html>
